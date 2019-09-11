@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import * as fuzz from 'fuzzball';
 import { Rankings, Players, PlayersById, PlayersByPosition, Player, Ranking, POSITIONS } from '../../models/league';
+import { MongoService } from '../mongo/mongo.service';
 
 const POSITIONS_SET = new Set(POSITIONS);
 
@@ -19,6 +20,7 @@ export class PlayersManagerService {
     private playersSubject: BehaviorSubject<Players | undefined> = new BehaviorSubject(undefined);
     private playersByIdSubject: BehaviorSubject<PlayersById | undefined> = new BehaviorSubject(undefined);
     private playersByPositionSubject: BehaviorSubject<PlayersByPosition | undefined> = new BehaviorSubject(undefined);
+    private db: Db;
 
     playersByPosition(): BehaviorSubject<PlayersByPosition | undefined> {
         return this.playersByPositionSubject;
@@ -28,7 +30,8 @@ export class PlayersManagerService {
         return this.playersByIdSubject;
     }
 
-    constructor(private db: Db, private mfl: mflTypes.MflService, private fantasyPros: fantasyProsTypes.FantasyProsService) {
+    constructor(private mongo: MongoService, private mfl: mflTypes.MflService, private fantasyPros: fantasyProsTypes.FantasyProsService) {
+        this.db = mongo.db;
         this.logger = new Logger('PlayersManagerService');
         this.collectionPlayers = this.db.collection('players');
         this.collectionRankings = this.db.collection('rankings');

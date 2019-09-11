@@ -5,7 +5,7 @@ const moment = extendMoment(Moment);
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-class WeekService {
+export class WeekService {
     private nflWeeks: DateRange[] = [
         moment.range(moment('2019-01-01', 'YYYY-MM-DD').tz('America/New_York'), moment('2019-09-10', 'YYYY-MM-DD').tz('America/New_York')),
         moment.range(moment('2019-09-10', 'YYYY-MM-DD').tz('America/New_York'), moment('2019-09-17', 'YYYY-MM-DD').tz('America/New_York')),
